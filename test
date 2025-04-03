@@ -5,6 +5,25 @@ Effective data access management is a cornerstone of any data-driven organizatio
 
 To address these limitations, we propose transitioning to AWS Lake Formation and AWS DataZone for managing data access. These services enable fine-grained access control without requiring new IAM policies, thereby enhancing security, compliance, and efficiency. Additionally, adopting Apache Iceberg will improve data performance and management. This white paper outlines our current challenges, target state, and a strategy for convergence.
 
+Background
+
+Our organization initially implemented the current producer-consumer contract model because, at the time, AWS did not offer native solutions for fine-grained data access control. The custom solution provides support for the following key use cases:
+
+Structured Data (S3/Glue):
+
+Allows producers to register their structured data hosted in S3 and make it available via the Glue Catalog.
+
+Once a contract is established, consumers can access the data by querying Glue/S3 using their choice of supported AWS technologies, such as EMR, Glue ETL, SageMaker, Lambda, and Athena, by assuming the producer’s read-only role.
+
+Structured/Unstructured Data (S3 Only):
+
+Consumers can access both structured and unstructured data directly by assuming the producer’s read-only role.
+
+Redshift Data:
+
+Supports data access using Redshift Data Sharing or Redshift Spectrum to allow cross-account and optimized querying.
+
+While this approach has worked well, it has limitations in governance, scalability, and access control granularity, which necessitates a transition to a more advanced solution.
 # **Business Requirements**
 - **Enhanced Security and Compliance:** Implement fine-grained access control to meet regulatory and business requirements.
 - **Operational Efficiency:** Reduce complexity in data access management by eliminating the need for multiple IAM policies.
